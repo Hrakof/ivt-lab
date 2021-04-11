@@ -1,3 +1,4 @@
+//Komment branch-B-ből
 package hu.bme.mit.spaceship;
 
 /**
