@@ -1,3 +1,4 @@
+//Komment branch-A-ból
 package hu.bme.mit.spaceship;
 
 /**
