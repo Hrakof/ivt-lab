@@ -140,5 +140,70 @@ public class GT4500Test {
     verify(mockPrimary, times(1)).fire(1);
     verify(mockSecondary, times(0)).fire(1);
   }
-  
+
+  @Test
+  public void primary_runs_out(){
+    // Arrange
+    when(mockPrimary.fire(1)).thenReturn(true);
+    when(mockSecondary.fire(1)).thenReturn(true);
+
+    // Act
+    ship.fireTorpedo(FiringMode.SINGLE);
+    when(mockPrimary.isEmpty()).thenReturn(true);
+    ship.fireTorpedo(FiringMode.SINGLE);
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    assertEquals(true, result);
+    verify(mockPrimary, times(1)).fire(1);
+    verify(mockSecondary, times(2)).fire(1);
+  }
+
+  @Test
+  public void both_runs_out(){
+    // Arrange
+    when(mockPrimary.fire(1)).thenReturn(true);
+    when(mockSecondary.isEmpty()).thenReturn(true);
+
+    // Act
+    ship.fireTorpedo(FiringMode.SINGLE);
+    when(mockPrimary.isEmpty()).thenReturn(true);
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    assertEquals(false, result);
+    verify(mockPrimary, times(1)).fire(1);
+    verify(mockSecondary, times(0)).fire(1);
+  }
+
+
+  @Test
+  public void secondary_stuck_firemode_ALL(){
+    // Arrange
+    when(mockPrimary.fire(1)).thenReturn(true);
+    when(mockSecondary.fire(1)).thenReturn(false);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    assertEquals(true, result);
+    verify(mockPrimary, times(1)).fire(1);
+    verify(mockSecondary, times(1)).fire(1);
+  }
+
+  @Test
+  public void fireTorpedo_All_secondary_empty(){
+    // Arrange
+    when(mockPrimary.fire(1)).thenReturn(true);
+    when(mockSecondary.isEmpty()).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.ALL);
+
+    // Assert
+    assertEquals(true, result);
+    verify(mockPrimary, times(1)).fire(1);
+    verify(mockSecondary, times(0)).fire(1);
+  }
 }
