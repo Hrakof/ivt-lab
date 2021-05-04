@@ -112,21 +112,6 @@ public class GT4500Test {
   }
 
   @Test
-  public void primary_stuck(){
-    // Arrange
-    when(mockPrimary.fire(1)).thenReturn(false);
-    when(mockSecondary.fire(1)).thenReturn(true);
-
-    // Act
-    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
-
-    // Assert
-    assertEquals(false, result);
-    verify(mockPrimary, times(1)).fire(1);
-    verify(mockSecondary, times(0)).fire(1);
-  }
-
-  @Test
   public void primary_stuck_firemode_ALL(){
     // Arrange
     when(mockPrimary.fire(1)).thenReturn(false);
@@ -140,4 +125,20 @@ public class GT4500Test {
     verify(mockPrimary, times(1)).fire(1);
     verify(mockSecondary, times(1)).fire(1);
   }
+
+  @Test
+  public void primary_stuck_firemode_SINGLE(){
+    // Arrange
+    when(mockPrimary.fire(1)).thenReturn(false);
+    when(mockSecondary.fire(1)).thenReturn(true);
+
+    // Act
+    boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+
+    // Assert
+    assertEquals(false, result);
+    verify(mockPrimary, times(1)).fire(1);
+    verify(mockSecondary, times(0)).fire(1);
+  }
+  
 }
